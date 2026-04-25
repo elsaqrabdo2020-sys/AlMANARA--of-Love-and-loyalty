@@ -1,0 +1,657 @@
+<!doctype html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مَنارَةُ الحُب والوَلاء | مدرسة المنارة</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { tajawal: ['Tajawal', 'sans-serif'], amiri: ['Amiri', 'serif'] },
+                    colors: { uae: { green: '#00732f', red: '#ce1126', black: '#000000', white: '#ffffff' } }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Tajawal', sans-serif; background-color: #f8fafc; }
+        .card-hover { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.15); border-color: #00732f; }
+        .badge { display: inline-flex; align-items: center; padding: 0.125rem 0.625rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; }
+        .badge-video { background-color: #dbeafe; color: #1e40af; }
+        .badge-photo { background-color: #fce7f3; color: #9d174d; }
+        .badge-ppt { background-color: #ffedd5; color: #c2410c; }
+        .badge-design { background-color: #ede9fe; color: #5b21b6; }
+        .badge-poem { background-color: #dcfce7; color: #166534; }
+        .badge-story { background-color: #fef9c3; color: #854d0e; }
+        .like-btn { transition: transform 0.2s; cursor: pointer; }
+        .like-btn.liked { color: #ce1126; transform: scale(1.1); }
+        .file-input-wrapper { position: relative; overflow: hidden; display: inline-block; width: 100%; cursor: pointer; }
+        .file-input-wrapper input[type=file] { font-size: 100px; position: absolute; left: 0; top: 0; opacity: 0; cursor: pointer; height: 100%; width: 100%; }
+        .certificate-wrapper { background: linear-gradient(135deg, #fffef5 0%, #fdf6e3 50%, #fffef5 100%); border: 8px double #c8a84e; padding: 4px; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1000; display: none; justify-content: center; align-items: center; backdrop-filter: blur(4px); padding: 16px; }
+        .modal-overlay.active { display: flex; }
+        .toast { position: fixed; top: 20px; left: 50%; transform: translate(-50%, -100px); z-index: 9999; padding: 12px 24px; border-radius: 12px; font-weight: bold; transition: all 0.4s; opacity: 0; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        .toast.show { transform: translate(-50%, 0); opacity: 1; }
+        .toast-success { background: #00732f; color: white; }
+        .toast-error { background: #ce1126; color: white; }
+        .submit-btn:active { transform: scale(0.98); }
+    </style>
+</head>
+<body class="text-gray-800 relative">
+
+    <div id="toast" class="toast flex items-center gap-2"></div>
+
+    <nav class="bg-white shadow-sm sticky top-0 z-50 border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center gap-3">
+                    <span class="text-2xl">🇦🇪</span>
+                    <span class="font-bold text-xl text-uae-green font-amiri hidden sm:block">مَنارَةُ الحُب والوَلاء</span>
+                </div>
+                <div class="flex space-x-2 space-x-reverse">
+                    <a href="#hero" class="text-sm font-bold text-gray-600 hover:text-uae-green px-3 py-2 transition hidden md:block">🏠 الرئيسية</a>
+                    <a href="#board" class="text-sm font-bold text-gray-600 hover:text-uae-green px-3 py-2 transition">📋 تصفح المشاركات</a>
+                    <a href="#participate" class="text-sm font-bold bg-green-50 text-uae-green border border-green-200 px-4 py-2 rounded-lg hover:bg-green-100 transition">✨ شارك الآن</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section id="hero" class="bg-white relative overflow-hidden border-b-4 border-uae-green pt-12 pb-16">
+        <div class="max-w-5xl mx-auto px-4 relative z-10 text-center">
+            
+            <div class="flex justify-center mb-6">
+                <div class="flex w-24 h-16 rounded shadow-md overflow-hidden border border-gray-200" dir="ltr">
+                    <div class="w-3/4 h-full flex flex-col">
+                        <div class="h-1/3 w-full bg-uae-green"></div>
+                        <div class="h-1/3 w-full bg-uae-white"></div>
+                        <div class="h-1/3 w-full bg-uae-black"></div>
+                    </div>
+                    <div class="w-1/4 h-full bg-uae-red"></div>
+                </div>
+            </div>
+
+            <h1 class="font-amiri font-bold text-5xl md:text-6xl mb-4 text-uae-green drop-shadow-sm">مَنارَةُ الحُب والوَلاء</h1>
+            <h2 class="text-xl md:text-2xl font-bold mb-6 text-gray-800">مدرسة المنارة الخاصة فرع الشامخة</h2>
+            
+            <div class="inline-flex items-center gap-2 bg-gradient-to-r from-uae-green to-emerald-600 text-white px-6 py-2 rounded-full shadow-lg mb-10">
+                <span class="font-bold text-lg">🇦🇪 فخورين بالإمارات 🇦🇪</span>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                <div class="bg-gray-50 border border-gray-100 rounded-xl p-4 text-center hover:-translate-y-1 transition">
+                    <div class="text-3xl mb-2">🕊️</div>
+                    <h3 class="font-bold text-uae-green mb-1">زايد الخير</h3>
+                    <p class="text-xs text-gray-500">رمز العطاء والإحسان</p>
+                </div>
+                <div class="bg-gray-50 border border-gray-100 rounded-xl p-4 text-center hover:-translate-y-1 transition">
+                    <div class="text-3xl mb-2">👑</div>
+                    <h3 class="font-bold text-uae-green mb-1">القيادة الرشيدة</h3>
+                    <p class="text-xs text-gray-500">الحكمة والرؤية الواضحة</p>
+                </div>
+                <div class="bg-gray-50 border border-gray-100 rounded-xl p-4 text-center hover:-translate-y-1 transition">
+                    <div class="text-3xl mb-2">🤝</div>
+                    <h3 class="font-bold text-uae-green mb-1">روح الاتحاد</h3>
+                    <p class="text-xs text-gray-500">الوحدة والتضامن الوطني</p>
+                </div>
+                <div class="bg-gray-50 border border-gray-100 rounded-xl p-4 text-center hover:-translate-y-1 transition">
+                    <div class="text-3xl mb-2">🚀</div>
+                    <h3 class="font-bold text-uae-green mb-1">رؤية المستقبل</h3>
+                    <p class="text-xs text-gray-500">نتعلم اليوم لنبتكر الغد</p>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100 text-justify mx-auto max-w-4xl leading-relaxed">
+                <p class="text-gray-700 font-medium mb-4">
+                    بفخرٍ يلامس عنان السماء، وتحت راية علم دولة الإمارات العربية المتحدة التي تخفق بالعز والشموخ، ترحب بكم <strong class="text-uae-green">مدرسة المنارة الخاصة - فرع الشامخة</strong> في رحاب هذه المنصة الوطنية التي تتزين بصور قادتنا وشيوخنا الكرام، رمز العطاء ومصدر إلهامنا.
+                </p>
+                <p class="text-gray-700 font-medium mb-4">
+                    نحن هنا لنحتفي معاً بمسيرة وطنٍ لا يعرف المستحيل، وندعوكم لترك بصمتكم الغالية من خلال كلمة شكر أو انطباع قصير يعبر عن حبكم للإمارات. لتنالوا فور انتهاء مشاركتكم <strong class="text-uae-red">شهادة تقديرية مخصصة</strong> تحمل أسماءكم، كرمزٍ لولائنا وانتمائنا لهذا الوطن المعطاء وتخليداً لمساهمتكم في مبادرة "منارة الحب والولاء" التي تجمعنا على حب الدار.
+                </p>
+                <div class="bg-blue-50 border-r-4 border-blue-500 p-4 rounded-l-lg">
+                    <h3 class="font-bold text-blue-800 mb-1">📋 عن المبادرة</h3>
+                    <p class="text-sm text-blue-900">مبادرة وطنية تهدف إلى تمكين جميع شرائح المجتمع، من مواطنين ومقيمين، من التعبير عن حبّهم لدولة الإمارات العربية المتحدة وقيادتها الرشيدة بطريقتهم الخاصّة، وتوثيق هذه المشاعر الصادقة ونشرها.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-white border-b border-gray-200 py-8">
+        <div class="max-w-5xl mx-auto px-4">
+            <h2 class="font-amiri text-2xl font-bold text-center text-uae-green mb-6">❤️ قسم التفاعل والتقدير</h2>
+            <p class="text-center text-gray-600 mb-6 font-bold">أولاً: أعجبتك كلمة الشكر؟ ضع إعجاباً (👍/❤️) تقديراً لقيادتنا الرشيدة.</p>
+            
+            <div class="flex flex-wrap justify-center md:justify-around items-center gap-6 text-center">
+                <div class="flex items-center gap-3 cursor-pointer group" onclick="handleGlobalLike()">
+                    <div class="text-5xl group-hover:scale-110 transition drop-shadow-md">❤️</div>
+                    <div class="text-right">
+                        <div id="globalLikeCount" class="text-3xl font-bold text-gray-800">1</div>
+                        <div class="text-sm text-gray-500 font-bold">إعجاب</div>
+                    </div>
+                </div>
+                <div class="hidden md:block w-px h-12 bg-gray-200"></div>
+                <div class="flex items-center gap-3">
+                    <div class="text-4xl">🎨</div>
+                    <div class="text-right">
+                        <div id="statParticipations" class="text-2xl font-bold text-gray-800">0</div>
+                        <div class="text-sm text-gray-500 font-bold">مشاركة إبداعية</div>
+                    </div>
+                </div>
+                <div class="hidden md:block w-px h-12 bg-gray-200"></div>
+                <div class="flex items-center gap-3">
+                    <div class="text-4xl">⭐</div>
+                    <div class="text-right">
+                        <div id="statCreators" class="text-2xl font-bold text-gray-800">0</div>
+                        <div class="text-sm text-gray-500 font-bold">مبدع ومبدعة</div>
+                    </div>
+                </div>
+                <div class="hidden md:block w-px h-12 bg-gray-200"></div>
+                <div class="flex items-center gap-3">
+                    <div class="text-4xl">👥</div>
+                    <div class="text-right">
+                        <div id="statTotal" class="text-2xl font-bold text-gray-800">0</div>
+                        <div class="text-sm text-gray-500 font-bold">عدد المشاركين</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="participate" class="max-w-5xl mx-auto px-4 py-12">
+        <div class="text-center mb-8">
+            <h2 class="font-amiri text-3xl font-bold text-gray-800 mb-2">شارك إبداعك الآن 🎥</h2>
+            <p class="text-gray-500">اختر نوع مشاركتك وشاركنا إبداعك الوطني</p>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+            <div class="card-hover bg-white rounded-xl p-4 text-center border border-gray-100 shadow-sm cursor-pointer" onclick="openForm('video')">
+                <div class="text-3xl mb-2">🎥</div>
+                <h3 class="font-bold text-sm text-gray-800 mb-1">فيديو إبداعي</h3>
+                <p class="text-xs text-gray-400">تصوير فيديو يعبر عن حب الوطن</p>
+            </div>
+            <div class="card-hover bg-white rounded-xl p-4 text-center border border-gray-100 shadow-sm cursor-pointer" onclick="openForm('photo')">
+                <div class="text-3xl mb-2">📸</div>
+                <h3 class="font-bold text-sm text-gray-800 mb-1">صورة إبداعية</h3>
+                <p class="text-xs text-gray-400">تعبر عن حب الوطن</p>
+            </div>
+            <div class="card-hover bg-white rounded-xl p-4 text-center border border-gray-100 shadow-sm cursor-pointer" onclick="openForm('presentation')">
+                <div class="text-3xl mb-2">📊</div>
+                <h3 class="font-bold text-sm text-gray-800 mb-1">عرض تقديمي</h3>
+                <p class="text-xs text-gray-400">بوربوينت أو PDF</p>
+            </div>
+            <div class="card-hover bg-white rounded-xl p-4 text-center border border-gray-100 shadow-sm cursor-pointer" onclick="openForm('design')">
+                <div class="text-3xl mb-2">🎨</div>
+                <h3 class="font-bold text-sm text-gray-800 mb-1">تصميم إبداعي</h3>
+                <p class="text-xs text-gray-400">بوستر أو عمل فني</p>
+            </div>
+            <div class="card-hover bg-white rounded-xl p-4 text-center border border-gray-100 shadow-sm cursor-pointer" onclick="openForm('poem')">
+                <div class="text-3xl mb-2">✍️</div>
+                <h3 class="font-bold text-sm text-gray-800 mb-1">قصيدة شعرية</h3>
+                <p class="text-xs text-gray-400">أبيات عن الفخر بالوطن</p>
+            </div>
+            <div class="card-hover bg-white rounded-xl p-4 text-center border border-gray-100 shadow-sm cursor-pointer" onclick="openForm('story')">
+                <div class="text-3xl mb-2">📖</div>
+                <h3 class="font-bold text-sm text-gray-800 mb-1">قصة قصيرة</h3>
+                <p class="text-xs text-gray-400">قصة وطنية</p>
+            </div>
+        </div>
+
+        <div id="submissionForm" class="hidden bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-200 mt-6 max-w-3xl mx-auto relative">
+            <button type="button" onclick="document.getElementById('submissionForm').classList.add('hidden')" class="absolute top-4 left-4 text-gray-400 hover:text-red-500 font-bold text-xl">&times;</button>
+            <h3 class="font-bold text-xl text-uae-green mb-6 border-b pb-3">أضف مشاركتك في الفعالية 🇦🇪</h3>
+            
+            <form id="mainForm" class="space-y-5">
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-1">👤 اسم المشارك *</label>
+                    <input type="text" id="partName" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:border-uae-green focus:bg-white outline-none transition" placeholder="أدخل اسمك الكامل...">
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">📂 مجال المشاركة *</label>
+                        <select id="partType" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:border-uae-green focus:bg-white outline-none transition">
+                            <option value="">اختر مجال المشاركة...</option>
+                            <option value="video">🎥 فيديو إبداعي</option>
+                            <option value="photo">📸 صورة إبداعية</option>
+                            <option value="presentation">📊 عرض تقديمي</option>
+                            <option value="design">🎨 تصميم إبداعي</option>
+                            <option value="poem">✍️ قصيدة شعرية</option>
+                            <option value="story">📖 قصة قصيرة</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">📍 الإمارة *</label>
+                        <select id="partEmirate" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:border-uae-green focus:bg-white outline-none transition">
+                            <option value="أبوظبي">أبوظبي</option>
+                            <option value="دبي">دبي</option>
+                            <option value="الشارقة">الشارقة</option>
+                            <option value="عجمان">عجمان</option>
+                            <option value="أم القيوين">أم القيوين</option>
+                            <option value="رأس الخيمة">رأس الخيمة</option>
+                            <option value="الفجيرة">الفجيرة</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-1">📝 عنوان المشاركة *</label>
+                    <input type="text" id="partTitle" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:border-uae-green focus:bg-white outline-none transition" placeholder="عنوان يعبر عن مشاركتك...">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-1">📄 محتوى المشاركة *</label>
+                    <textarea id="partContent" rows="4" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:border-uae-green focus:bg-white outline-none transition resize-none" placeholder="يمكنك كتابة القصيدة أو القصة أو وصف الفيديو أو التصميم..."></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">📎 رفع ملف (يدعم فيديو – صورة – PDF)</label>
+                    <div class="file-input-wrapper bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:bg-gray-100 transition">
+                        <div id="uploadPlaceholder">
+                            <div class="text-4xl mb-2">🖼️</div>
+                            <p class="font-bold text-gray-600">اضغط هنا أو اسحب الصورة لرفعها</p>
+                        </div>
+                        <input type="file" id="fileUpload" accept="image/*,video/*,.pdf" onchange="handleFileSelect(this)">
+                    </div>
+                    <div id="filePreviewContainer" class="hidden mt-3 p-3 bg-green-50 border border-green-200 rounded-lg shadow-sm justify-between items-center">
+                        <div class="flex items-center gap-3">
+                            <span id="fileIcon" class="text-2xl">📄</span>
+                            <div>
+                                <p id="fileNameDisplay" class="font-bold text-sm text-gray-800 line-clamp-1"></p>
+                            </div>
+                        </div>
+                        <button type="button" onclick="removeFile()" class="text-red-500 hover:bg-red-50 rounded-full w-8 h-8 flex items-center justify-center font-bold text-lg">&times;</button>
+                    </div>
+                </div>
+
+                <div class="bg-blue-50 p-4 rounded-lg border border-blue-100 mt-4">
+                    <p class="text-sm text-gray-700 font-bold mb-3">✓ بالضغط على الزر أدناه، أنت توافق على شروط الاستخدام وسياسة الخصوصية:</p>
+                    <div class="flex gap-2">
+                        <button type="button" onclick="openModal('privacyModal')" class="text-xs font-bold text-blue-700 bg-white px-3 py-1.5 rounded border border-blue-200 hover:bg-blue-100 transition">🔒 سياسة الخصوصية</button>
+                        <button type="button" onclick="openModal('termsModal')" class="text-xs font-bold text-green-700 bg-white px-3 py-1.5 rounded border border-green-200 hover:bg-green-100 transition">📋 اتفاقية الاستخدام</button>
+                    </div>
+                </div>
+
+                <button type="button" onclick="submitParticipation()" class="submit-btn w-full bg-[#00732f] hover:bg-green-700 text-white font-bold text-lg py-4 rounded-xl transition shadow-md flex items-center justify-center gap-2">
+                    ✨ إرسال المشاركة
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <section id="board" class="max-w-7xl mx-auto px-4 py-10">
+        <div class="flex justify-between items-end mb-8 border-b border-gray-200 pb-4">
+            <div>
+                <h2 class="font-amiri text-2xl font-bold text-gray-800">🏆 لوحة أبطال الإبداع</h2>
+                <p class="text-sm text-gray-500">المشاركات الأكثر تميزاً وتفاعلاً (Reels Style)</p>
+            </div>
+        </div>
+
+        <div id="reelsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div id="emptyState" class="col-span-full text-center py-20 bg-white rounded-2xl border border-gray-100">
+                <div class="text-5xl mb-4 opacity-50">🌟</div>
+                <h3 class="font-bold text-gray-500">لا توجد مشاركات بعد. كن أول المشاركين!</h3>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-white border-t border-gray-200 py-16">
+        <div class="max-w-3xl mx-auto px-4 text-center">
+            <div class="text-4xl mb-4">📜</div>
+            <h2 class="font-amiri text-3xl font-bold text-gray-800 mb-2">قسم إصدار الشهادات الرقمية</h2>
+            <p class="text-gray-600 mb-8 font-bold">للمشاركة في الحملة وتوثيق بصمتك الوطنية، سجّل دخولك للحصول على الشهادة وإصدار شهادتك الرقمية باسمك.</p>
+            
+            <div class="bg-gray-50 rounded-2xl p-6 md:p-8 border border-gray-100 shadow-sm max-w-lg mx-auto text-right">
+                <p class="text-sm text-gray-600 mb-4 font-bold text-center">الرجاء تسجيل الدخول واختيار فئتك:</p>
+                <form onsubmit="generateCertificate(event)" class="space-y-5">
+                    <div>
+                        <input type="text" id="certName" required class="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-uae-green outline-none" placeholder="الاسم الكامل...">
+                    </div>
+                    <div>
+                        <select id="certCategory" required class="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-uae-green outline-none">
+                            <option value="">اختر فئتك...</option>
+                            <option value="طالب / طالبة">طالب / طالبة</option>
+                            <option value="ولي أمر">ولي أمر</option>
+                            <option value="معلم">معلم</option>
+                            <option value="مدير مدرسة">مدير مدرسة</option>
+                            <option value="أمين مكتبة">أمين مكتبة</option>
+                            <option value="أخصائي اجتماعي">أخصائي اجتماعي</option>
+                            <option value="كادر إداري">كادر إداري</option>
+                            <option value="أخرى (مواطن / مقيم / زائر)">أخرى (مواطن / مقيم / زائر)</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 text-white font-bold text-lg py-3 rounded-xl hover:from-yellow-600 hover:to-yellow-700 transition shadow-sm cursor-pointer">
+                        إصدار الشهادة الآن
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-900 text-white pt-12 pb-6 text-center">
+        <h3 class="font-amiri text-2xl font-bold text-uae-green mb-6">مَنارَةُ الحُب والوَلاء</h3>
+        
+        <div class="flex flex-col md:flex-row justify-center items-center gap-6 md:gap-12 mb-8">
+            <div>
+                <p class="text-gray-400 text-sm mb-1">مديرة المدرسة</p>
+                <p class="font-bold text-lg text-gray-100 font-amiri">أ. مها نبيل</p>
+            </div>
+            <div class="hidden md:block w-px h-10 bg-gray-700"></div>
+            <div>
+                <p class="text-gray-400 text-sm mb-1">فكرة وإعداد: رئيس قسم الأنشطة</p>
+                <p class="font-bold text-lg text-gray-100 font-amiri">الأستاذ: عبدالشافي عبدالجليل</p>
+            </div>
+        </div>
+        
+        <div class="flex justify-center gap-6 mb-8">
+            <button onclick="openModal('privacyModal')" class="text-sm font-bold text-gray-400 hover:text-white transition">سياسة الخصوصية</button>
+            <button onclick="openModal('termsModal')" class="text-sm font-bold text-gray-400 hover:text-white transition">اتفاقية الاستخدام</button>
+        </div>
+
+        <div class="border-t border-gray-800 pt-6">
+            <p class="font-amiri text-xl font-bold text-gray-300 mb-2">وَثيقَةُ عَهْدٍ وامْتِنان</p>
+            <p class="text-xs text-gray-500">© 2026 جميع الحقوق محفوظة — عبدالشافي عبدالجليل. مَنارَةُ الحُب والوَلاء مدرسة المنارة الخاصة فرع الشامخة.</p>
+        </div>
+    </footer>
+
+    <div id="certModal" class="modal-overlay">
+        <div class="bg-white rounded-2xl p-6 md:p-8 mx-4 max-w-3xl w-full modal-content shadow-2xl relative">
+            <button onclick="closeModal('certModal')" class="absolute top-4 left-4 text-gray-400 hover:text-red-500 text-2xl font-bold">&times;</button>
+            <h3 class="font-bold text-xl text-center text-gray-800 mb-6">تحميل شهادتك</h3>
+            
+            <div class="mb-6 overflow-x-auto pb-4">
+                <div id="certificateArea" class="certificate-wrapper rounded-lg p-8 md:p-12 mx-auto" style="width: 800px; text-align: center; background-color: #fffef5;">
+                    <div class="flex justify-center mb-6">
+                        <div class="flex w-24 h-16 border border-gray-300 shadow-sm" dir="ltr">
+                            <div class="w-3/4 h-full flex flex-col">
+                                <div class="h-1/3 w-full bg-[#00732f]"></div><div class="h-1/3 w-full bg-[#ffffff]"></div><div class="h-1/3 w-full bg-[#000000]"></div>
+                            </div>
+                            <div class="w-1/4 h-full bg-[#ce1126]"></div>
+                        </div>
+                    </div>
+                    <h1 class="font-amiri text-4xl font-bold text-uae-green mb-2">شهادة شكر وتقدير</h1>
+                    <p class="text-gray-600 font-bold mb-6 text-sm">مبادرة مَنارَةُ الحُب والوَلاء - فخورين بالإمارات 🇦🇪</p>
+                    <div class="w-24 h-1 bg-yellow-500 mx-auto mb-6"></div>
+                    <p class="text-lg text-gray-700 font-bold mb-3">تشهد مدرسة المنارة الخاصة - فرع الشامخة بأن</p>
+                    <p id="certDisplayCat" class="text-sm text-gray-500 font-bold mb-1"></p>
+                    <p id="certDisplayName" class="font-amiri text-4xl font-bold text-yellow-600 mb-6 leading-tight"></p>
+                    <p class="text-gray-700 font-bold leading-relaxed max-w-lg mx-auto mb-12" style="text-align-last: center;">
+                        قد شارك/ت في مبادرة "منارة الحب والولاء" الوطنية، وعبّر/ت عن حبه/ها وولائه/ها لدولة الإمارات العربية المتحدة وقيادتها الرشيدة.
+                    </p>
+                    <div class="flex justify-between items-end px-8 mt-8">
+                        <div class="text-center">
+                            <p class="text-xs font-bold text-gray-500 mb-1">رئيس قسم الأنشطة</p>
+                            <p class="text-sm font-bold text-uae-green">أ. عبدالشافي عبدالجليل</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-5xl mb-2">🏅</div>
+                            <p id="certDate" class="text-xs font-bold text-gray-400"></p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-xs font-bold text-gray-500 mb-1">مديرة المدرسة</p>
+                            <p class="text-sm font-bold text-uae-green">أ. مها نبيل</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <button onclick="downloadCert('jpg')" class="flex items-center justify-center gap-2 bg-gray-50 border border-gray-200 text-gray-700 font-bold py-3 rounded-xl hover:bg-gray-100 transition cursor-pointer">
+                    <span>🖼️</span><span>تحميل JPG</span>
+                </button>
+                <button onclick="downloadCert('png')" class="flex items-center justify-center gap-2 bg-gray-900 text-white font-bold py-3 rounded-xl hover:bg-gray-800 transition cursor-pointer">
+                    <span>📷</span><span>تحميل PNG</span>
+                </button>
+                <button onclick="downloadCert('pdf')" class="flex items-center justify-center gap-2 bg-red-50 border border-red-200 text-red-700 font-bold py-3 rounded-xl hover:bg-red-100 transition cursor-pointer">
+                    <span>📄</span><span>تحميل PDF</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="privacyModal" class="modal-overlay">
+        <div class="bg-white rounded-2xl p-6 md:p-8 mx-4 max-w-2xl w-full modal-content shadow-2xl relative overflow-y-auto max-h-[90vh]">
+            <button onclick="closeModal('privacyModal')" class="absolute top-4 left-4 text-gray-400 hover:text-red-500 text-2xl font-bold">&times;</button>
+            <h2 class="font-bold text-xl text-gray-800 mb-4 pb-3 border-b">🔒 سياسة الخصوصية – مبادرة «فخورون بالإمارات»</h2>
+            <div class="text-gray-600 text-sm leading-relaxed space-y-4 text-justify">
+                <p>نحمي خصوصيتكم ونضمن أمان بياناتكم في مبادرة «فخورون بالإمارات» من خلال سياسات واضحة وممارسات آمنة تتوافق مع القيم الوطنية لدولة الإمارات العربية المتحدة.</p>
+                <h3 class="font-bold text-gray-800">أولاً: المقدمة</h3>
+                <p>في إطار التزام مبادرة «فخورون بالإمارات» بدورها الوطني والتربوي، فإننا نولي حماية خصوصية المشاركين والزوار أهمية كبيرة، باعتبارها جزءاً أساسياً من بناء بيئة رقمية آمنة وموثوقة.</p>
+                <h3 class="font-bold text-gray-800">ثانياً: نطاق التطبيق</h3>
+                <p>تنطبق السياسة على الطلبة، أولياء الأمور، المعلمين، الزوار والجهات المشاركة.</p>
+                <h3 class="font-bold text-gray-800">ثالثاً: أنواع البيانات</h3>
+                <p>نجمع البيانات الاختيارية مثل: الاسم، الفئة، الإمارة، نوع المشاركة، وصفها، ووسائل التواصل عند الحاجة. لا نطلب بيانات حساسة غير ضرورية.</p>
+                <h3 class="font-bold text-gray-800">رابعاً: الاستخدام والمشاركة</h3>
+                <p>تستخدم البيانات لإدارة الفعاليات وتحسين الخدمات. نلتزم بعدم بيع أو مشاركة البيانات لأغراض تجارية.</p>
+                <div class="bg-green-50 p-3 rounded-lg border border-green-100 mt-4 text-center">
+                    <p class="font-bold text-uae-green text-xs mb-1">تواصل معنا للاستفسار عبر الواتساب:</p>
+                    <p class="font-bold text-lg text-gray-800" dir="ltr">📱 0507829571</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="termsModal" class="modal-overlay">
+        <div class="bg-white rounded-2xl p-6 md:p-8 mx-4 max-w-2xl w-full modal-content shadow-2xl relative overflow-y-auto max-h-[90vh]">
+            <button onclick="closeModal('termsModal')" class="absolute top-4 left-4 text-gray-400 hover:text-red-500 text-2xl font-bold">&times;</button>
+            <h2 class="font-bold text-xl text-gray-800 mb-4 pb-3 border-b">📋 اتفاقية الاستخدام – مبادرة «مَنارَةُ الحُب والوَلاء»</h2>
+            <div class="text-gray-600 text-sm leading-relaxed space-y-4 text-justify">
+                <p>تنظم هذه الاتفاقية شروط وأحكام استخدام مبادرة «مَنارَةُ الحُب والوَلاء»، بما يضمن الاستخدام الآمن والواعي والمسؤول لجميع المشاركين والزوار.</p>
+                <h3 class="font-bold text-gray-800">أولاً: المقدمة والأهلية</h3>
+                <p>تتاح المشاركة لجميع أفراد المجتمع داخل الإمارات. للطلبة دون السن القانونية، تتم المشاركة تحت إشراف ولي الأمر أو المدرسة.</p>
+                <h3 class="font-bold text-gray-800 text-red-600">ثانياً: ميثاق السلوك (يُمنع منعاً باتاً):</h3>
+                <ul class="list-disc list-inside">
+                    <li>نشر أي محتوى مسيء أو غير لائق.</li>
+                    <li>الإساءة اللفظية أو التنمر.</li>
+                    <li>الإساءة إلى رموز الدولة أو القيادة الرشيدة.</li>
+                </ul>
+                <h3 class="font-bold text-gray-800">ثالثاً: المحتوى وحقوق الملكية</h3>
+                <p>يتعهد المشارك بأن المحتوى من إنتاجه. يمنح المشارك المبادرة حقاً غير حصري لاستخدامه في التوثيق والترويج الإعلامي.</p>
+                <h3 class="font-bold text-gray-800">رابعاً: الصلاحيات</h3>
+                <p>يحق للإدارة مراجعة، تعديل، أو حذف المشاركات للحفاظ على جودة المحتوى وسلامة البيئة الرقمية.</p>
+                <div class="bg-blue-50 p-3 rounded-lg border border-blue-100 mt-4 text-center">
+                    <p class="font-bold text-blue-800 text-xs mb-1">تواصل معنا للاستفسار عبر الواتساب:</p>
+                    <p class="font-bold text-lg text-gray-800" dir="ltr">📱 0507829571</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <script>
+        // ================= التخزين المحلي (LocalStorage) =================
+        let globalLikes = 1; // قيمة افتراضية للإعجاب العام
+        let isGlobalLiked = false;
+        let submissions = [];
+
+        // تحميل البيانات المحفوظة عند فتح الصفحة
+        function loadData() {
+            const savedLikes = localStorage.getItem('manara_globalLikes');
+            if (savedLikes) globalLikes = parseInt(savedLikes);
+            
+            const savedLikedState = localStorage.getItem('manara_isGlobalLiked');
+            if (savedLikedState === 'true') isGlobalLiked = true;
+
+            const savedSubmissions = localStorage.getItem('manara_submissions');
+            if (savedSubmissions) submissions = JSON.parse(savedSubmissions);
+
+            updateStats();
+            renderCards();
+        }
+
+        // حفظ البيانات في المتصفح
+        function saveData() {
+            localStorage.setItem('manara_globalLikes', globalLikes);
+            localStorage.setItem('manara_isGlobalLiked', isGlobalLiked);
+            localStorage.setItem('manara_submissions', JSON.stringify(submissions));
+        }
+
+        // تحديث الإحصائيات في الصفحة
+        function updateStats() {
+            document.getElementById('globalLikeCount').innerText = globalLikes;
+            document.getElementById('statParticipations').innerText = submissions.length;
+            
+            // حساب المبدعين الفريدين (بالاسم)
+            const uniqueCreators = new Set(submissions.map(s => s.name)).size;
+            document.getElementById('statCreators').innerText = uniqueCreators;
+            
+            document.getElementById('statTotal').innerText = submissions.length + globalLikes;
+        }
+
+        // تنفيذ التحميل فور فتح الصفحة
+        window.onload = loadData;
+
+        // ================= دوال واجهة المستخدم =================
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast flex items-center gap-2 show ${type === 'error' ? 'toast-error' : 'toast-success'}`;
+            setTimeout(() => { toast.classList.remove('show'); }, 3000);
+        }
+
+        function handleGlobalLike() {
+            if(isGlobalLiked) return;
+            isGlobalLiked = true;
+            globalLikes++;
+            saveData();
+            updateStats();
+            showToast('شكراً لمشاعرك الوطنية الصادقة ❤️', 'success');
+        }
+
+        function openForm(typeVal) {
+            document.getElementById('submissionForm').classList.remove('hidden');
+            const mapping = {
+                'video': 'video', 'photo': 'photo', 'presentation': 'presentation',
+                'design': 'design', 'poem': 'poem', 'story': 'story'
+            };
+            document.getElementById('partType').value = mapping[typeVal] || '';
+            document.getElementById('submissionForm').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function handleFileSelect(input) {
+            const file = input.files[0];
+            if (!file) return;
+            if (file.size > (5 * 1024 * 1024)) {
+                showToast('❌ عذراً، حجم الملف يتجاوز 5 ميجابايت!', 'error');
+                removeFile(); return;
+            }
+            document.getElementById('uploadPlaceholder').classList.add('hidden');
+            const previewContainer = document.getElementById('filePreviewContainer');
+            previewContainer.classList.remove('hidden'); previewContainer.classList.add('flex');
+            document.getElementById('fileNameDisplay').innerText = file.name;
+            document.getElementById('fileIcon').innerText = file.type.startsWith('image/') ? '🖼️' : file.type.startsWith('video/') ? '🎥' : '📄';
+        }
+
+        function removeFile() {
+            document.getElementById('fileUpload').value = '';
+            document.getElementById('uploadPlaceholder').classList.remove('hidden');
+            const previewContainer = document.getElementById('filePreviewContainer');
+            previewContainer.classList.add('hidden'); previewContainer.classList.remove('flex');
+        }
+
+        // ================= الإرسال وحفظ المشاركة =================
+        function submitParticipation() {
+            const name = document.getElementById('partName').value.trim();
+            const type = document.getElementById('partType').value;
+            const emirate = document.getElementById('partEmirate').value;
+            const title = document.getElementById('partTitle').value.trim();
+            const content = document.getElementById('partContent').value.trim();
+
+            if (!name || !type || !emirate || !title || !content) {
+                showToast('⚠️ يرجى تعبئة جميع الحقول المطلوبة للمشاركة!', 'error'); return;
+            }
+            
+            const today = new Date();
+            const dateStr = today.toLocaleDateString('ar-AE', { day: 'numeric', month: 'long', year: 'numeric' });
+
+            // إضافة المشاركة الجديدة والتخزين
+            submissions.unshift({ id: Date.now(), name, type, title, content, date: dateStr, likes: 0 });
+            saveData();
+            updateStats();
+            renderCards();
+            
+            showToast('✅ تم إرسال مشاركتك وحفظها بنجاح!', 'success');
+            document.getElementById('mainForm').reset();
+            removeFile();
+            document.getElementById('submissionForm').classList.add('hidden');
+        }
+
+        // ================= عرض البطاقات (Reels Style) =================
+        function renderCards() {
+            const container = document.getElementById('reelsContainer');
+            if (submissions.length === 0) {
+                container.innerHTML = `<div id="emptyState" class="col-span-full text-center py-20 bg-white rounded-2xl border border-gray-100"><div class="text-5xl mb-4 opacity-50">🌟</div><h3 class="font-bold text-gray-500">لا توجد مشاركات بعد. كن أول المشاركين!</h3></div>`;
+                return;
+            }
+            
+            container.innerHTML = ''; 
+            const typeConfig = {
+                'video': { label: '🎥 فيديو إبداعي', class: 'badge-video' }, 'photo': { label: '📸 صورة إبداعية', class: 'badge-photo' },
+                'presentation': { label: '📊 عرض تقديمي', class: 'badge-ppt' }, 'design': { label: '🎨 تصميم إبداعي', class: 'badge-design' },
+                'poem': { label: '✍️ قصيدة شعرية', class: 'badge-poem' }, 'story': { label: '📖 قصة قصيرة', class: 'badge-story' },
+            };
+
+            submissions.forEach((sub, index) => {
+                const config = typeConfig[sub.type] || { label: '🌟 مشاركة', class: 'badge-photo' };
+                const card = document.createElement('div');
+                card.className = 'card-hover bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex flex-col h-full';
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="badge ${config.class}">${config.label}</span>
+                        <span class="text-xs text-gray-400 font-bold">📅 ${sub.date}</span>
+                    </div>
+                    <h3 class="font-bold text-gray-800 text-lg mb-2 line-clamp-1">${sub.title}</h3>
+                    <p class="text-sm text-gray-600 mb-4 line-clamp-3 flex-grow">${sub.content}</p>
+                    <div class="flex justify-between items-center pt-4 border-t border-gray-50 mt-auto">
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-sm">👤</div>
+                            <span class="text-sm font-bold text-uae-green">${sub.name}</span>
+                        </div>
+                        <button onclick="likeCard(${index}, this)" class="like-btn text-gray-400 hover:text-red-500 font-bold text-sm flex items-center gap-1">
+                            <span class="text-lg">❤️</span> <span class="like-counter">${sub.likes}</span>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function likeCard(index, btn) {
+            submissions[index].likes++;
+            saveData(); // حفظ الإعجاب في المتصفح
+            btn.querySelector('.like-counter').innerText = submissions[index].likes;
+            btn.classList.add('text-red-500'); btn.classList.remove('text-gray-400'); btn.classList.add('liked'); 
+            setTimeout(() => { btn.classList.remove('liked'); }, 200); 
+        }
+
+        // ================= النوافذ والشهادة =================
+        function openModal(id) { document.getElementById(id).classList.add('active'); }
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+        function generateCertificate(e) {
+            e.preventDefault();
+            document.getElementById('certDisplayName').innerText = document.getElementById('certName').value;
+            document.getElementById('certDisplayCat').innerText = document.getElementById('certCategory').value;
+            document.getElementById('certDate').innerText = new Date().toLocaleDateString('ar-AE', { year: 'numeric', month: 'long', day: 'numeric' });
+            openModal('certModal');
+        }
+
+        async function downloadCert(format) {
+            showToast('⏳ جارٍ تجهيز الشهادة للتحميل...', 'success');
+            const certArea = document.getElementById('certificateArea');
+            try {
+                if (format === 'pdf') {
+                    html2pdf().set({ margin: 5, filename: 'شهادة-المنارة.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2, useCORS: true }, jsPDF: { orientation: 'landscape', unit: 'mm', format: 'a4' } }).from(certArea).save().then(() => showToast('✅ تم التحميل (PDF)', 'success'));
+                } else {
+                    const canvas = await html2canvas(certArea, { scale: 2, useCORS: true, backgroundColor: '#fffef5' });
+                    const link = document.createElement('a');
+                    link.download = `شهادة-المنارة.${format}`; link.href = canvas.toDataURL(`image/${format}`); link.click();
+                    showToast(`✅ تم التحميل (${format.toUpperCase()})`, 'success');
+                }
+            } catch(e) { showToast('❌ حدث خطأ أثناء التحميل', 'error'); }
+        }
+    </script>
+</body>
+</html>
